@@ -18,14 +18,15 @@ screen = pygame.display.set_mode((intial_screen_width,intial_screen_height), pyg
 game_icon = pygame.image.load('snake_icon.png')
 pygame.display.set_icon(game_icon)
 
+#Sets the windows name to the string in this case Jacks snake game
+pygame.display.set_caption("Jacks Snake game")
 
 #Infinte loop that loops until the exit button is pressed in the window 
-while True:
+quit_game = False
+while not quit_game:
     for event in pygame.event.get():
-        if event.type == QUIT:
-            pygame.quit()
-            sys.exit()
-    pygame.display.update()
+        if event.type == pygame.QUIT:
+            quit_game = True
 
-
+pygame.quit()
 quit()
