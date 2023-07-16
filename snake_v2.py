@@ -49,11 +49,13 @@ while not quit_game:
 
     pygame.display.update()
     for event in pygame.event.get():
+
+        print(event.type)
+
         if event.type == pygame.QUIT:
             quit_game = True
 
-
-        pygame.draw.rect(screen, SNAKE_RED, [0, 0, SNAKE_WIDTH, SNAKE_HEIGHT])
+    #for event in pygame.event.get_pressed():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
                 snake_delta_x = -SNAKE_WIDTH

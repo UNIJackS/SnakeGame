@@ -35,7 +35,6 @@ pygame.display.set_caption("Jacks Snake game")
 pygame.draw.rect(screen, SNAKE_RED, [inital_snake_x, inital_snake_y, SNAKE_WIDTH, SNAKE_HEIGHT])
 
 
-
 #Infinte loop that loops until the exit button is pressed in the window 
 quit_game = False
 while not quit_game:
