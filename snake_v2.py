@@ -50,13 +50,14 @@ while not quit_game:
     pygame.display.update()
     for event in pygame.event.get():
 
-        print(event.type)
+        #print(event.type)
 
         if event.type == pygame.QUIT:
             quit_game = True
 
     #for event in pygame.event.get_pressed():
         if event.type == pygame.KEYDOWN:
+            print(event.type)
             if event.key == pygame.K_LEFT:
                 snake_delta_x = -SNAKE_WIDTH
                 snake_delta_y = 0
@@ -72,9 +73,10 @@ while not quit_game:
             elif event.key == pygame.K_DOWN:
                 snake_delta_y = SNAKE_HEIGHT
                 snake_delta_x = 0
+            snake_x += snake_delta_x
+            snake_y += snake_delta_y
 
-        snake_x += snake_delta_x
-        snake_y += snake_delta_y
+        
 
         time_since_last_input = time.time()
 
