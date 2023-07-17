@@ -6,8 +6,8 @@ from pygame.locals import QUIT
 SNAKE_WIDTH = 20
 SNAKE_HEIGHT = 20
 
-INITAL_SCREEN_WIDTH = 400
-INITAL_SCREEN_HEIGHT = 200
+INITAL_SCREEN_WIDTH = 1000
+INITAL_SCREEN_HEIGHT = 1000
 
 snake_x = (INITAL_SCREEN_WIDTH-SNAKE_WIDTH)/2
 snake_y = (INITAL_SCREEN_HEIGHT-SNAKE_HEIGHT)/2
@@ -73,19 +73,24 @@ while not quit_game:
             elif event.key == pygame.K_DOWN:
                 snake_delta_y = SNAKE_HEIGHT
                 snake_delta_x = 0
-            snake_x += snake_delta_x
-            snake_y += snake_delta_y
+            
+
+
+            
 
         
 
-        time_since_last_input = time.time()
+    screen.fill(BACKROUND)
 
-        screen.fill(BACKROUND)
+    snake_x += snake_delta_x
+    snake_y += snake_delta_y
 
-        pygame.draw.rect(screen, SNAKE_RED, [snake_x, snake_y, SNAKE_WIDTH, SNAKE_HEIGHT])
-        pygame.display.update()
+    pygame.draw.rect(screen, SNAKE_RED, [snake_x, snake_y, SNAKE_WIDTH, SNAKE_HEIGHT])
+    pygame.display.update()
 
-        clock.tick(TICK_TIME)
+    clock.tick(TICK_TIME)
+
+        
 
 
 
