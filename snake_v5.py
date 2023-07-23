@@ -15,6 +15,10 @@ INITAL_SCREEN_HEIGHT = 720
 
 snake_pos = [((math.trunc(INITAL_SCREEN_WIDTH/SNAKE_WIDTH))/2*SNAKE_WIDTH), ((math.trunc(INITAL_SCREEN_HEIGHT/SNAKE_HEIGHT))/2*SNAKE_HEIGHT)]
 
+
+snake_list = []
+snake_length = 1
+
 food_pos = [0,0]
 
 food_alive = True
@@ -28,6 +32,7 @@ clock = pygame.time.Clock()
 
 TICK_TIME = 10
 
+input_list = [0,0]
 
 pygame.init()
 
@@ -62,12 +67,13 @@ def backround_drawing():
             pygame.draw.rect(screen,LIGHT_BACROUND,[x*SNAKE_WIDTH+1,y*SNAKE_HEIGHT+1,18,18])
 
 
-def input_checker():
-    snake_delta_x = 0
-    snake_delta_y = 0
+
+def input_checker(snake_delta_x,snake_delta_y):
+    
+    exit_game = False
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            quit_game = True
+            exit_game = True
 
         if event.type == pygame.KEYDOWN:
             
@@ -87,9 +93,11 @@ def input_checker():
                 snake_delta_y = SNAKE_HEIGHT
                 snake_delta_x = 0
 
-    return [snake_delta_x,snake_delta_y]
+    return [snake_delta_x,snake_delta_y,exit_game]
 
-
+def draw_snake(snake_list):
+    for x in snake_list:
+        pygame.draw.rect(screen, SNAKE_RED, [x[0], x[1], SNAKE_WIDTH , SNAKE_HEIGHT])
 
 #Infinte loop that loops until the exit button is pressed in the window 
 quit_game = False
@@ -97,24 +105,38 @@ quit_game = False
 while not quit_game:
     
     #checks if there has been user input and exacutes apprprate movement
-    snake_pos_delta = input_checker()
+    input_list = input_checker(input_list[0],input_list[1])
     #moves snake in x axis
-    snake_pos[0] += snake_pos_delta[0]
+    snake_pos[0] += input_list[0]
     #moves snake in y axis
-    snake_pos[1] += snake_pos_delta[1]
-
+    snake_pos[1] += input_list[1]
+    #quits the game if the exit button has been pressed
+    quit_game = input_list[2]
 
     #quits game if you go outside the intial bounds 
     if snake_pos[0] >= INITAL_SCREEN_WIDTH or snake_pos[0] < 0 or snake_pos[1] >= INITAL_SCREEN_HEIGHT or snake_pos[1] < 0:
         quit_game = True
 
+    #checks if the snake is in the same cube as the food
     if (snake_pos[0]+10 == food_pos[0] and snake_pos[1]+10 == food_pos[1]):
         food_alive = True
+        snake_length += 1
     
     #draws backround elements
     backround_drawing()
 
-    pygame.draw.rect(screen, SNAKE_RED, [snake_pos[0], snake_pos[1], SNAKE_WIDTH, SNAKE_HEIGHT])
+    
+    snake_head = []
+    snake_head.append(snake_pos[0])
+    snake_head.append(snake_pos[1])
+    snake_list.append(snake_head)
+    if len(snake_list) > snake_length:
+        del snake_list[0]
+    for x in snake_list[:-1]:
+        if x == snake_head:
+            quit_game = True
+    draw_snake(snake_list)
+
     
     #checks if the food is alive if not spawns a new one
     if(food_alive == True):
