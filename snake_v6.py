@@ -5,16 +5,17 @@ import time
 import sys
 import random
 import math
+import string
 from pygame.locals import QUIT
 
-SNAKE_WIDTH = 20
-SNAKE_HEIGHT = 20
+#Intial snake size
+SNAKE_WIDTH = 30
+SNAKE_HEIGHT = 30
 
 INITAL_SCREEN_WIDTH = 1000
 INITAL_SCREEN_HEIGHT = 720
 
-snake_pos = [((math.trunc(INITAL_SCREEN_WIDTH/SNAKE_WIDTH))/2*SNAKE_WIDTH), ((math.trunc(INITAL_SCREEN_HEIGHT/SNAKE_HEIGHT))/2*SNAKE_HEIGHT)]
-
+snake_pos = [((math.trunc(INITAL_SCREEN_WIDTH/SNAKE_WIDTH/2))*SNAKE_WIDTH), ((math.trunc(INITAL_SCREEN_HEIGHT/SNAKE_HEIGHT/2))*SNAKE_HEIGHT)]
 
 snake_list = []
 snake_length = 1
@@ -30,7 +31,7 @@ LIGHT_BACROUND = (118,30,138)
 
 clock = pygame.time.Clock()
 
-TICK_TIME = 10
+TICK_TIME = 5
 
 input_list = [0,0]
 
@@ -51,9 +52,9 @@ pygame.display.set_caption("Jacks Snake game")
 
 font = pygame.font.Font("freesansbold.ttf", 50)
 
-def message(msg,text_colour, bkgd_colour):
+def message(msg,text_colour, bkgd_colour, x_pos, Y_pos):
     txt = font.render(msg, True, text_colour, bkgd_colour)
-    text_box = txt.get_rect(center = (INITAL_SCREEN_WIDTH/2, INITAL_SCREEN_HEIGHT/2))
+    text_box = txt.get_rect(center = (x_pos,Y_pos ))
     screen.blit(txt, text_box)
 
 #Draws the backround elements
@@ -64,7 +65,9 @@ def backround_drawing():
     #Drawers the grid for the backround
     for x in range(math.trunc(INITAL_SCREEN_WIDTH/SNAKE_WIDTH)):
         for y in range(math.trunc(INITAL_SCREEN_HEIGHT/SNAKE_HEIGHT)):
-            pygame.draw.rect(screen,LIGHT_BACROUND,[x*SNAKE_WIDTH+1,y*SNAKE_HEIGHT+1,18,18])
+            pygame.draw.rect(screen,LIGHT_BACROUND,[x*SNAKE_WIDTH+1,y*SNAKE_HEIGHT+1,SNAKE_WIDTH-2,SNAKE_HEIGHT-2])
+    
+    message ("{}".format(snake_length), BACKROUND, FOOD_BLUE, 50, 30)
 
 
 
@@ -77,19 +80,19 @@ def input_checker(snake_delta_x,snake_delta_y):
 
         if event.type == pygame.KEYDOWN:
             
-            if event.key == pygame.K_LEFT:
+            if event.key == pygame.K_LEFT and snake_delta_x != SNAKE_WIDTH:
                 snake_delta_x = -SNAKE_WIDTH
                 snake_delta_y = 0
 
-            elif event.key == pygame.K_RIGHT:
+            elif event.key == pygame.K_RIGHT and snake_delta_x != -SNAKE_WIDTH:
                 snake_delta_x = SNAKE_WIDTH
                 snake_delta_y = 0
 
-            elif event.key == pygame.K_UP:
+            elif event.key == pygame.K_UP and snake_delta_x != SNAKE_HEIGHT:
                 snake_delta_y = -SNAKE_HEIGHT
                 snake_delta_x = 0
 
-            elif event.key == pygame.K_DOWN:
+            elif event.key == pygame.K_DOWN and snake_delta_x != -SNAKE_HEIGHT:
                 snake_delta_y = SNAKE_HEIGHT
                 snake_delta_x = 0
 
@@ -118,7 +121,7 @@ while not quit_game:
         quit_game = True
 
     #checks if the snake is in the same cube as the food
-    if (snake_pos[0]+10 == food_pos[0] and snake_pos[1]+10 == food_pos[1]):
+    if (snake_pos[0]+SNAKE_WIDTH/2 == food_pos[0] and snake_pos[1]+SNAKE_HEIGHT/2 == food_pos[1]):
         food_alive = True
         snake_length += 1
     
@@ -155,7 +158,7 @@ while not quit_game:
     clock.tick(TICK_TIME)
 
         
-message ("You died!", BACKROUND, SNAKE_RED)
+message ("You died!", BACKROUND, SNAKE_RED,INITAL_SCREEN_WIDTH/2 ,INITAL_SCREEN_HEIGHT/2 )
 pygame.display.update()
 time.sleep(3)
 
